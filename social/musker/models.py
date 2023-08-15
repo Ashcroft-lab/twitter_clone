@@ -15,6 +15,7 @@ class Profile(models.Model):
         return self.user.username
 
 # Create profile when new user signs up
+# either use receiver or use post_save.connect
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
