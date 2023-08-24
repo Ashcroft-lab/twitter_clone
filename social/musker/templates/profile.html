@@ -7,9 +7,18 @@
         <div class="col-8">
 
           <h1>{{ profile.user.username }}'s Profile</h1>
+          <br><br>
+          {% if meeps %}
+              {% for meep in meeps %}
+
+              <div class="alert alert-dark" role="alert">
+                {{ meep }}
+              </div><br>
+              {% endfor %}
+          {% endif %}
         </div>
     <div class="col-4">
-
+      <br><br>
       <div class="card">
         <div class="card-header">
           Follows
