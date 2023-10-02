@@ -23,6 +23,13 @@
         </div>
     <div class="col-4">
       <br><br>
+
+      {% if profile.profile_image %}
+      <img src="{{ profile.profile_image.url }}" class="img-fluid rounded-start">
+      <br/><br/>
+      {% endif %}
+
+
       <div class="card">
         <div class="card-header">
           Follows
