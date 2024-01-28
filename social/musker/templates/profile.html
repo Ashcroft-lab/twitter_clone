@@ -38,7 +38,10 @@
                 {% else %}
                 <a href="{% url 'like' meep.id %}"><i class="fa fa-heart-o" style='color:red'></i></a>
                 {% endif %}
-
+                &nbsp&nbsp
+                <a href="{% url 'meep_show' meep.id %}">
+                  <i class="fa-regular fa-share-from-square" style="color:grey"></i>
+                </a>
               </small>
               </div><br>
             </div>
@@ -58,6 +61,25 @@
       <br/><br/>
       {% endif %}
 
+
+
+      {% if profile.facebook_link %}
+<a href="{{ profile.facebook_link }}" target='new'><i class="fa-brands fa-facebook" style="color:grey"></i></a>
+      {% endif %}
+&nbsp&nbsp
+      {% if profile.linkedin_link %}
+<a href="{{ profile.linkedin_link }}" target='new'><i class="fa-brands fa-linkedin-in" style="color:grey"></i></a>
+      {% endif %}
+&nbsp&nbsp
+      {% if profile.website_link %}
+<a href="{{ profile.website_link }}" target='new'><i class="fa-solid fa-globe" style="color:grey"></i></a>
+      {% endif %}
+
+<br><br>
+{% if profile.profile_bio %}
+<p align="center justify"> {{ profile.profile_bio}} </p>
+{% endif %}
+<br><br>
 
       <div class="card">
         <div class="card-header">

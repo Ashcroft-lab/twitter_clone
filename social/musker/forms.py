@@ -7,11 +7,15 @@ from django.contrib.auth.models import User
 # Profile Pic Form
 
 class ProfilePicForm(forms.ModelForm):
-    profile_image = forms.ImageField(label="Profile Picture")
+    profile_image = forms.ImageField(label="Profile Picture", required=False)
+    profile_bio= forms.CharField(label="Profile Bio", widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':'Profile Bio'}), required=False)
+    facebook_link = forms.URLField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Facebook Link'}), required=False)
+    linkedin_link = forms.URLField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'LinkedIn Link'}), required=False)
+    website_link = forms.URLField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Website Link'}), required=False)
 
     class Meta:
         model = Profile
-        fields = ("profile_image",)
+        fields = ("profile_image", 'profile_bio', 'facebook_link', 'linkedin_link', 'website_link',)
 
 
 

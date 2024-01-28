@@ -121,6 +121,7 @@ def register_user(request):
 def update_user(request):
     if request.user.is_authenticated:
 
+
         current_user = User.objects.get(id=request.user.id)
         profile_user = Profile.objects.get(user__id=request.user.id)
 
@@ -133,7 +134,7 @@ def update_user(request):
             profile_form.save()
 
             login(request, current_user)
-            messages.success(request, ("Your Profile has been updated "))
+            messages.success(request, "Your Profile has been updated ")
 
         return render(request, "update_user.html", {'user_form':user_form, 'profile_form':profile_form})
         
@@ -153,7 +154,17 @@ def meep_like(request, pk):
             meep.likes.remove(request.user)
         else:
             meep.likes.add(request.user)
-            
+
     else:
         messages.success(request, 'You must be logged in' )
     return redirect(referer)
+
+def meep_show(request, pk):
+    meep = get_object_or_404(Meep, id=pk)
+    
+    if meep:
+        # url = request.url
+        return render(request, 'show_meep.html', {'meep':meep})
+    else:
+        messages.success(request,'Meep doesn\'t exist')
+        return redirect('home') 
