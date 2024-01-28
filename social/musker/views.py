@@ -143,6 +143,9 @@ def update_user(request):
 
 
 def meep_like(request, pk):
+
+    referer = request.META.get('HTTP_REFERER', 'home')
+    
     if request.user.is_authenticated:
 
         meep = get_object_or_404(Meep, id=pk)
@@ -150,7 +153,7 @@ def meep_like(request, pk):
             meep.likes.remove(request.user)
         else:
             meep.likes.add(request.user)
-        return redirect('home')
-
-    messages.success(request, 'You must be logged in' )
-    return redirect('home')
+            
+    else:
+        messages.success(request, 'You must be logged in' )
+    return redirect(referer)

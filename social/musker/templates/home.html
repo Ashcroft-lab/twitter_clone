@@ -36,14 +36,14 @@
               <small class="text-muted">
                 ({{ meep.created_at }}) By
                 <a href="{% url 'profile' meep.user.id %}">@{{ meep.user }}</a>
-
-                - {{ meep.number_of_likes }}Likes
+                  &nbsp&nbsp
                   {% if request.user in meep.likes.all %}
-                <a href="{% url 'like' meep.id %}"> --Unlike--</a>
+                <a href="{% url 'like' meep.id %}"><i class="fa-solid fa-heart" style='color:red'></i></a>
 
                 {% else %}
-                <a href="{% url 'like' meep.id %}"> --like--</a>
+                <a href="{% url 'like' meep.id %}"><i class="fa fa-heart-o" style='color:red'></i></a>
                 {% endif %}
+                {{ meep.number_of_likes }}
               </small>
             </div>
           </div>
