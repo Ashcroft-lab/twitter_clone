@@ -1,36 +1,67 @@
-{% extends "base.html"%}
-
-{% block content %}
+{% extends "base.html"%} {% load static %} {% block content %}
 
 <div class="container text-center">
   <div class="row">
     <div class="col-8">
+      <h1>Hello there!!</h1>
+      <br />
+      {% for meep in meeps %}
 
-<h1>Hello there!!</h1>
-<br>
-    {% for meep in meeps %}
+      <div class="alert alert-dark" role="alert">
+        <div class="container">
+          <div class="row">
+            <div class="col-1">
+              {% if meep.user.profile.profile_image %}
+              <img
+                src="{{ meep.user.profile.profile_image.url }}"
+                width="50"
+                height="50"
+                class="rounded-circle"
+                alt="{{ meep.user.username }}"
+              />
 
-    <div class="alert alert-dark" role="alert">
-      {{ meep.body }}<br>
-      <small class="text-muted">
-      ({{ meep.created_at }}) By @{{ meep.username }}
+              {% else %}
+              <img
+                src="{% static 'images/dummy.png' %}"
+                width="50"
+                height="50"
+                class="rounded-circle"
+                alt="{{ meep.user.username }}"
+              />
 
-    </small>
-    </div><br>
-    {% endfor %}
+              {% endif %}
+            </div>
+            <div class="col-11">
+              {{ meep.body }}<br />
+              <small class="text-muted">
+                ({{ meep.created_at }}) By
+                <a href="{% url 'profile' meep.user.id %}">@{{ meep.user }}</a>
 
-</div>
+                - {{ meep.number_of_likes }}Likes
+                  {% if request.user in meep.likes.all %}
+                <a href="{% url 'like' meep.id %}"> --Unlike--</a>
+
+                {% else %}
+                <a href="{% url 'like' meep.id %}"> --like--</a>
+                {% endif %}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      {% endfor %}
+    </div>
     <div class="col-4">
-      <br><br>
-{% if form %}
+      <br /><br />
+      {% if form %}
       <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p}}
-
+        {% csrf_token %} {{ form.as_p}}
 
         <button type="submit" class="btn btn-secondary">Post Meep!</button>
       </form>
-{% endif %}
+      {% endif %}
+    </div>
+  </div>
 </div>
-
 {% endblock %}
