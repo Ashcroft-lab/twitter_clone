@@ -28,7 +28,7 @@
               {% endif %}
 
             </div>
-            <div class="col-11">
+            <div class="col-10">
 
               {{ meep.body }}<br>
               <small class="text-muted">
@@ -44,8 +44,23 @@
                 <a href="{% url 'meep_show' meep.id %}">
                   <i class="fa-regular fa-share-from-square" style="color:grey"></i>
                 </a>
+                &nbsp&nbsp
+
+                {% if request.user.username == profile.user.username %}
+
+
+                <a href="{% url 'delete_meep' meep.id %}">
+                  <i class="fa-solid fa-trash" style="color:grey" align="right"></i>
+                </a>
+                &nbsp;&nbsp;
+                <a href="{% url 'edit_meep' meep.id %}">
+                  <i class="fa-solid fa-edit" style="color:grey" align="right"></i>
+                </a>
+
+                {% endif %}
               </small>
             </div><br>
+
           </div>
         </div>
       </div>

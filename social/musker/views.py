@@ -215,3 +215,71 @@ def meep_show(request, pk):
     else:
         messages.success(request,'Meep doesn\'t exist')
         return redirect('home') 
+
+def delete_meep(request, pk):
+    if request.user.is_authenticated:
+        meep = get_object_or_404(Meep, id=pk)
+
+        if request.user.username == meep.user.username:
+            meep.delete()
+            messages.success(request, "You have deleted the meep")
+        else:
+            messages.success(request, "You are not allowed to delete this meep!!")
+        return redirect(request.META.get("HTTP_REFERER", 'home'))
+
+    else:
+        messages.success(request, 'please Login to continue')
+        return redirect('login')
+
+
+def edit_meep(request, pk):
+    if request.user.is_authenticated:
+        meep = get_object_or_404(Meep, id=pk)
+        
+
+        if request.user.username == meep.user.username:
+            form = MeepForm(request.POST or None, instance=meep)
+            if request.method == "POST":
+                if form.is_valid():
+                    meep = form.save(commit=False)
+                    meep.user = request.user
+                    meep.save()
+                    messages.success(request, "You have edited a meep")
+                    return redirect('home')
+
+
+            context = {'form': form, 'meep': meep}
+            return render(request, 'edit_meep.html', context)
+
+        else:
+            messages.success(request, "You are not allowed to edit this meep!!")
+        return redirect(request.META.get("HTTP_REFERER", 'home'))
+
+    else:
+        messages.success(request, 'please Login to continue')
+        return redirect('login')
+
+def search(request):
+
+    if request.method == "POST":
+        search = request.POST['search']
+        searched = Meep.objects.filter(body__contains = search)
+
+        return render(request, 'search.html', {'search':search, 'searched':searched})
+    
+    else:
+        return render(request, 'search.html', {})
+
+def search_user(request):
+    if request.method == "POST":
+        search = request.POST['search']
+        searched = User.objects.filter(username__contains=search)
+        return render(request, 'search_user.html', {'search':search, "searched":searched })
+    return render(request, 'search_user.html', {})
+
+    # context = {}
+    # if request.method == "POST":
+    #     context['search'] = request.POST['search']
+    #     context['searched'] = User.objects.filter(username__contains = search)
+
+    # return render(request, 'search_user.html', context)
