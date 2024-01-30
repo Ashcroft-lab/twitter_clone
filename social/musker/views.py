@@ -35,6 +35,32 @@ def profile_list(request):
     else:
         messages.success(request, ("you must be logged in to view this page"))
         return redirect("home")
+
+def follow(request, pk):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user_id=pk)
+
+        request.user.profile.follows.add(profile)
+        request.user.profile.save()
+
+        messages.success(request, f'You just folllowed {profile.user.username}.')
+        return redirect(request.META.get('HTTP_REFERER'))
+    messages.success(request, 'you must be logged in...')
+    return redirect('login')
+
+def unfollow(request, pk):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user_id= pk)
+        
+        request.user.profile.follows.remove(profile)
+        request.user.profile.save()
+
+        messages.success(request, f'You have successfully unfollowed { profile.user.username }.')
+        return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        messages.success(request, 'you must be logged in..')
+        return redirect('home')
+
 def profile(request, pk):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user_id=pk)
@@ -67,6 +93,27 @@ def profile(request, pk):
     else:
         messages.success(request, ("you must be logged in to view this page"))
         return redirect("home")
+
+def followers(request, pk):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+
+            profiles = Profile.objects.get(user_id=pk)
+            return render(request, "followers.html", {"profiles":profiles})
+    
+    messages.success(request, ("you are not allowed to view this page"))
+    return redirect("home")
+
+
+def follows(request, pk):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+
+            profiles = Profile.objects.get(user_id=pk)
+            return render(request, "follows.html", {"profiles":profiles})
+    
+    messages.success(request, ("you are not allowed to view this page"))
+    return redirect("home")
 
 
 
